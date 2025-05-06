@@ -16,19 +16,6 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads")); // Serve uploaded images - fix later
 app.use("/api/devices", deviceRoutes);
 
-// //connect to mongodb
-// mongoose.connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// }).then(() => {
-//     console.log("Connected to Mongodb");
-//     app.listen(process.env.PORT, () => {
-//         console.log(`Server running on http://localhost:${process.env.PORT}`);
-//     });
-
-// }).catch((err) => {
-//     console.error("MongoDB connection error:", err);
-// });
 
 //connect to mysql
 async function startServer(){
