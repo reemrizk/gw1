@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function App() {
   const [formData, setFormData] = useState({
-    deviceId: "",
     assocId: "",
+    PPM_barcode: "",
+    PPM_written: "",
     image: null,
   });
 
-  const [devices, setDevices] = useState([]);
+  const [deviceId, setDeviceId] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -21,78 +22,62 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("deviceId", formData.deviceId);
     data.append("assocId", formData.assocId);
+    data.append("PPM_barcode", formData.PPM_barcode);
+    data.append("PPM_written", formData.PPM_written);
     data.append("image", formData.image);
 
     try {
-      await axios.post("http://localhost:5000/api/devices", data);
-      alert("Device submitted!");
-      setFormData({ deviceId: "", assocId: "", image: null });
-      fetchDevices(); // refresh the list
+      const res = await axios.post("http://localhost:5000/api/check-in", data);
+      setDeviceId(res.data.deviceId);
+      alert(`Device ${res.data.deviceId} checked in successfully!`);
     } catch (err) {
-      console.error(err);
-      alert("Submission failed");
+      console.error("Check-in failed:", err);
+      alert("Failed to check in appliance.");
     }
   };
 
-  const fetchDevices = async () => {
-    const res = await axios.get("http://localhost:5000/api/devices");
-    setDevices(res.data);
-  };
-
-  useEffect(() => {
-    fetchDevices();
-  }, []);
-
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Device Check-In</h1>
+      <h1>Appliance Check-In</h1>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input
-          name="deviceId"
-          placeholder="Device ID"
-          value={formData.deviceId}
-          onChange={handleChange}
-          required
-        />
-        <br />
         <input
           name="assocId"
           placeholder="Associate ID"
           value={formData.assocId}
           onChange={handleChange}
           required
-        />
-        <br />
+        /><br />
+        <input
+          name="PPM_barcode"
+          placeholder="PPM Barcode"
+          value={formData.PPM_barcode}
+          onChange={handleChange}
+          required
+        /><br />
+        <input
+          name="PPM_written"
+          placeholder="PPM Written"
+          value={formData.PPM_written}
+          onChange={handleChange}
+          required
+        /><br />
         <input
           type="file"
           name="image"
           accept="image/*"
           onChange={handleChange}
           required
-        />
-        <br />
+        /><br />
         <button type="submit">Check In</button>
       </form>
 
-      <h2>Checked-In Devices</h2>
-      <ul>
-        {devices.map((device) => (
-          <li key={device.id}>
-            <strong>{device.deviceId}</strong> by {device.assocId}<br />
-            <em>{new Date(device.createdAt).toLocaleString()}</em><br />
-            {device.imageUrl && (
-              <img
-                src={`http://localhost:5000${device.imageUrl}`}
-                alt="device barcode"
-                width="150"
-              />
-            )}
-            <hr />
-          </li>
-        ))}
-      </ul>
+      {deviceId && (
+        <div>
+          <h3>Device checked in:</h3>
+          <p>{deviceId}</p>
+        </div>
+      )}
     </div>
   );
 }
