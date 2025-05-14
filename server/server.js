@@ -1,14 +1,14 @@
 //entry point for app
 
 const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 require("dotenv").config();
 const express = require("express");
-// const mongoose = require("mongoose");
 const cors = require("cors");
-const deviceRoutes = require("./routes/devices");
+
 const checkInRoutes = require("./routes/checkIn");
-const prisma = new PrismaClient();
+
 
 const app = express();
 
@@ -16,7 +16,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads")); // Serve uploaded images - fix later
-app.use("/api/devices", deviceRoutes);
 app.use("/api/check-in", checkInRoutes);
 
 
