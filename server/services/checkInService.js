@@ -5,15 +5,15 @@ const generateDeviceId = require("../utils/generateDeviceId");
 
 const prisma = new PrismaClient();
 
-exports.checkIn = async ({ assocId, PPM_barcode, PPM_written, imageUrl }) => {
+exports.checkIn = async ({ assocId, ppmBarcode, ppmWritten, imageUrl }) => {
     const deviceId = generateDeviceId();
 
     await prisma.applianceIn.create({
         data: {
             deviceId,
             assocId,
-            PPM_barcode,
-            PPM_written,
+            ppmBarcode,
+            ppmWritten,
             imageUrl,
         },
     });

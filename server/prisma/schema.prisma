@@ -18,8 +18,8 @@ model ApplianceIn {
   deviceId  String     @unique
   assocId   String
   imageUrl  String?
-  PPM_barcode String
-  PPM_written String
+  ppmBarcode String
+  ppmWritten String
   timeStamp DateTime @default(now())
 
   appDetails AppDetails[]

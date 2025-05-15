@@ -4,8 +4,8 @@ import axios from "axios";
 function App() {
   const [formData, setFormData] = useState({
     assocId: "",
-    PPM_barcode: "",
-    PPM_written: "",
+    ppmBarcode: "",
+    ppmWritten: "",
     image: null,
   });
 
@@ -23,8 +23,8 @@ function App() {
     e.preventDefault();
     const data = new FormData();
     data.append("assocId", formData.assocId);
-    data.append("PPM_barcode", formData.PPM_barcode);
-    data.append("PPM_written", formData.PPM_written);
+    data.append("ppmBarcode", formData.ppmBarcode);
+    data.append("ppmWritten", formData.ppmWritten);
     data.append("image", formData.image);
 
     try {
@@ -49,16 +49,16 @@ function App() {
           required
         /><br />
         <input
-          name="PPM_barcode"
+          name="ppmBarcode"
           placeholder="PPM Barcode"
-          value={formData.PPM_barcode}
+          value={formData.ppmBarcode}
           onChange={handleChange}
           required
         /><br />
         <input
-          name="PPM_written"
+          name="ppmWritten"
           placeholder="PPM Written"
-          value={formData.PPM_written}
+          value={formData.ppmWritten}
           onChange={handleChange}
           required
         /><br />
